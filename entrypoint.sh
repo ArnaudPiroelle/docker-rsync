@@ -27,10 +27,10 @@ if [ -z "$REMOTE_FOLDER" ]; then
 	exit 1
 fi
 
-RSYNC_OPTS="-ahtvrzP"
+RSYNC_OPTS="-ahtvrzP --stats --size-only "
 
 if [ ! -z "$BWLIMIT" ]; then
-	RSYNC_OPTS="$RSYNC_OPTS --stats --size-only --bwlimit=$BWLIMIT"
+	RSYNC_OPTS="$RSYNC_OPTS --bwlimit=$BWLIMIT"
 fi
 
 if [ -z "$SSH_PORT" ]; then
