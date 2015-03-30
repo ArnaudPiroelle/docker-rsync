@@ -1,15 +1,21 @@
 #!/bin/bash
 
-if [ ! -e ~/.ssh/id_rsa ]; then
-	ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa > /dev/null 2>&1
-	# Add Remote key in known hosts
-	ssh-keyscan $SSH_ADDRESS >> ~/.ssh/known_hosts 2> /dev/null
+mkdir -p /rsync/{ssh_keys,logs}
+mkdir -p ~/.ssh/
 
-	echo "Copy/Paste this public key on the $HOME/.ssh/authorized_keys file of your user"
+if [ ! -e /rsync/ssh_keys/id_rsa ]; then
+	ssh-keygen -t rsa -N "" -f /rsync/ssh_keys/id_rsa
+	# Add Remote key in known hosts
+	ssh-keyscan $SSH_ADDRESS > /rsync/ssh_keys/known_hosts 2> /dev/null
+
+	echo 'Copy/Paste this public key on the $HOME/.ssh/authorized_keys file of your user'
 	echo "==================="
-	cat ~/.ssh/id_rsa.pub
+	cat /rsync/ssh_keys/id_rsa.pub
 	echo "==================="
 	exit
+else 
+	rm -rf ~/.ssh/*
+	cp /rsync/ssh_keys/* ~/.ssh/
 fi
 
 if [ -z "$SSH_USER" ]; then
@@ -27,7 +33,7 @@ if [ -z "$REMOTE_FOLDER" ]; then
 	exit 1
 fi
 
-RSYNC_OPTS="-ahtvrzP --stats --size-only "
+RSYNC_OPTS="-ahtvrzP --stats --size-only"
 
 if [ ! -z "$BWLIMIT" ]; then
 	RSYNC_OPTS="$RSYNC_OPTS --bwlimit=$BWLIMIT"
