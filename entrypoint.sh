@@ -33,7 +33,7 @@ if [ -z "$REMOTE_FOLDER" ]; then
 	exit 1
 fi
 
-RSYNC_OPTS="-ahtvrzP --stats --size-only"
+RSYNC_OPTS="-ahtvrzP --stats --size-only --partial-dir=$REMOTE_FOLDER/.rsync"
 
 if [ ! -z "$BWLIMIT" ]; then
 	RSYNC_OPTS="$RSYNC_OPTS --bwlimit=$BWLIMIT"
