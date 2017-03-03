@@ -39,8 +39,8 @@ if [ ! -z "$BWLIMIT" ]; then
 	RSYNC_OPTS="$RSYNC_OPTS --bwlimit=$BWLIMIT"
 fi
 
-if [ -z "$SSH_PORT" ]; then
-	RSYNC_OPTS="$RSYNC_OPTS --rsh ssh -p $SSH_PORT"
+if [ ! -z "$SSH_PORT" ]; then
+	RSYNC_OPTS="$RSYNC_OPTS -e \"ssh -p $SSH_PORT\""
 else
 	RSYNC_OPTS="$RSYNC_OPTS -e ssh"
 fi
