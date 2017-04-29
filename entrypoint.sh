@@ -13,14 +13,14 @@ if [ ! -e /rsync/ssh_keys/id_rsa ]; then
 	cat /rsync/ssh_keys/id_rsa.pub
 	echo "==================="
 	exit
-else 
+else
 	rm -rf ~/.ssh/*
 	cp /rsync/ssh_keys/* ~/.ssh/
 fi
 
 if [ -z "$SSH_USER" ]; then
 	echo "No ssh user defined. Exiting."
-    exit 1	
+    exit 1
 fi
 
 if [ -z "$SSH_ADDRESS" ]; then
@@ -40,7 +40,7 @@ if [ ! -z "$BWLIMIT" ]; then
 fi
 
 if [ ! -z "$SSH_PORT" ]; then
-	RSYNC_OPTS="$RSYNC_OPTS -e \"ssh -p $SSH_PORT\""
+	RSYNC_OPTS="$RSYNC_OPTS --rsh ssh -p $SSH_PORT"
 else
 	RSYNC_OPTS="$RSYNC_OPTS -e ssh"
 fi
